@@ -36,4 +36,9 @@ git clone https://github.com/Coco10023/lab3-backend.git
 ```
 
 ## Publicering 
-https://lab3-backend-k7rv.onrender.com/ 
+
+Bas-URL:
+https://lab3-backend-k7rv.onrender.com/
+
+Endpoint (arbetserfarenheter):
+https://lab3-backend-k7rv.onrender.com/api/experiences

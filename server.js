@@ -21,3 +21,5 @@ mongoose.connect(process.env.MONGO_URI)
 app.listen(3000, () => {
   console.log("Servern körs på port 3000");
 });
+
+const Experience = require("./models/Experience");

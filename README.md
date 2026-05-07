@@ -32,4 +32,8 @@ Varje arbetserfarenhet innehåller följande fält:
 1. Klona repot
 
 ```bash
-git clone DIN_GITHUB_LÄNK_HÄR
+git clone https://github.com/Coco10023/lab3-backend.git 
+```
+
+## Publicering 
+https://lab3-backend-k7rv.onrender.com/ 

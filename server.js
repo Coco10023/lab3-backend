@@ -1,6 +1,7 @@
 require("dotenv").config();
 console.log("MONGO_URI:", process.env.MONGO_URI);
 
+// Importerar nödvändiga paket
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -10,16 +11,16 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middleware
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // Middleware som tillåter cross-origin requests (frontend kan prata med API)
+app.use(express.json()); // Middleware som gör att vi kan läsa JSON i request body
 
 
-// Anslut till MongoDB
+// Ansluter till MongoDB via Mongoose
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("Ansluten till MongoDB"))
   .catch(err => console.log(err));
 
-  // Test Route
+  // Test-route för att kontrollera att API fungerar
   app.get("/", (req, res) => {
   res.json({ message: "API fungerar" });
 });
@@ -56,8 +57,11 @@ app.listen(3000, () => {
 
 // POST - skapa ny arbetserfarenhet
 app.post("/api/experiences", async (req, res) => {
-  const { company, role, location, startDate, description } = req.body;
 
+  // Hämtar data från request body
+  const { company, role, location, startDate, description } = req.body; 
+
+  // Validering – kontrollerar att obligatoriska fält finns
   if (!company || !role || !location || !startDate || !description) {
     return res.status(400).json({
       message: "Company, role, location, startDate och description måste fyllas i."
@@ -65,6 +69,7 @@ app.post("/api/experiences", async (req, res) => {
   }
 
   try {
+    // Skapar nytt objekt i databasen
     const newExperience = new Experience({
       company,
       role,
@@ -74,6 +79,7 @@ app.post("/api/experiences", async (req, res) => {
       description
     });
 
+    // Sparar till MongoDB
     const savedExperience = await newExperience.save();
     res.status(201).json(savedExperience);
   } catch (error) {
@@ -81,7 +87,7 @@ app.post("/api/experiences", async (req, res) => {
   }
 });
 
-// PUT - uppdatera arbetserfarenhet
+// Uppdaterar en befintlig arbetserfarenhet baserat på ID
 app.put("/api/experiences/:id", async (req, res) => {
   const { company, role, location, startDate, description } = req.body;
 
@@ -115,7 +121,7 @@ app.put("/api/experiences/:id", async (req, res) => {
   }
 });
 
-// DELETE - radera arbetserfarenhet
+// Raderar en arbetserfarenhet baserat på ID
 app.delete("/api/experiences/:id", async (req, res) => {
   try {
     const deletedExperience = await Experience.findByIdAndDelete(req.params.id);
@@ -130,7 +136,7 @@ app.delete("/api/experiences/:id", async (req, res) => {
   }
 });
 
-// Starta servern
+// Startar servern på angiven port
 app.listen(PORT, () => {
   console.log(`Servern körs på http://localhost:${PORT}`);
 });
